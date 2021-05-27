@@ -19,6 +19,7 @@ import java.nio.charset.StandardCharsets
 
 buildscript {
   repositories {
+	maven { url 'http://maven.aliyun.com/nexus/content/groups/public/'}
     mavenCentral()
     jcenter()
     maven {
@@ -54,6 +55,7 @@ spotless {
 allprojects {
 
   repositories {
+	maven { url 'http://maven.aliyun.com/nexus/content/groups/public/'}
     mavenCentral()
   }
 
@@ -446,26 +448,26 @@ subprojects {
     }
   }
 
-  plugins.withType(ScalaPlugin) {
-
-    scala {
-      zincVersion = versions.zinc
-    }
-
-    task scaladocJar(type:Jar) {
-      classifier = 'scaladoc'
-      from "$rootDir/LICENSE"
-      from "$rootDir/NOTICE"
-      from scaladoc.destinationDir
-    }
-
-    //documentation task should also trigger building scala doc jar
-    docsJar.dependsOn scaladocJar
-
-    artifacts {
-      archives scaladocJar
-    }
-  }
+  // plugins.withType(ScalaPlugin) {
+  // 
+  //   scala {
+  //     zincVersion = versions.zinc
+  //   }
+  // 
+  //   task scaladocJar(type:Jar) {
+  //     classifier = 'scaladoc'
+  //     from "$rootDir/LICENSE"
+  //     from "$rootDir/NOTICE"
+  //     from scaladoc.destinationDir
+  //   }
+  // 
+  //   //documentation task should also trigger building scala doc jar
+  //   docsJar.dependsOn scaladocJar
+  // 
+  //   artifacts {
+  //     archives scaladocJar
+  //   }
+  // }
 
   tasks.withType(ScalaCompile) {
     scalaCompileOptions.additionalParameters = [
@@ -706,6 +708,11 @@ project(':core') {
   archivesBaseName = "kafka_${versions.baseScala}"
 
   dependencies {
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12
+    compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.25'
+
     compile project(':clients')
     compile libs.jacksonDatabind
     compile libs.jacksonModuleScala
